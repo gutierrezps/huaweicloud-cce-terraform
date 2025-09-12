@@ -26,3 +26,8 @@ variable "cce_node_password" {
   sensitive   = true
   description = "OS password for CCE Nodes"
 }
+
+variable "obs_bucket_name" {
+  type        = string
+  description = "Name of OBS bucket to be mounted as storage in cluster"
+}
