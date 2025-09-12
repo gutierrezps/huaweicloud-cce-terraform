@@ -20,7 +20,7 @@ resource "huaweicloud_cce_cluster" "main" {
   vpc_id                 = huaweicloud_vpc.main.id
   subnet_id              = huaweicloud_vpc_subnet.main.id
   container_network_type = "vpc-router"
-  cluster_version        = "v1.29"
+  cluster_version        = "v1.31"
   container_network_cidr = "10.246.0.0/16"
   service_network_cidr   = "10.247.0.0/16"
   kube_proxy_mode        = "iptables"
