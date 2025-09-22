@@ -33,34 +33,48 @@ resource "local_file" "cce_kubeconfig" {
   filename = "output/kubeconfig.json"
 }
 
-resource "huaweicloud_cce_node" "cce_node" {
-  cluster_id        = huaweicloud_cce_cluster.main.id
-  name              = "cce-node-01"
-  flavor_id         = "s6.xlarge.4"
-  availability_zone = var.availability_zone
-  password          = var.cce_node_password
-  subnet_id         = huaweicloud_vpc_subnet.main.id
+resource "huaweicloud_cce_node_pool" "main" {
+  cluster_id         = huaweicloud_cce_cluster.main.id
+  name               = "cce-pool"
+  os                 = "Huawei Cloud EulerOS 2.0"
+  initial_node_count = 2
+  flavor_id          = "s7n.xlarge.4"
+  availability_zone  = var.availability_zone
+  password           = var.cce_node_password
+  min_node_count     = 1
+  max_node_count     = 20
+  priority           = 1
+  type               = "vm"
+  scall_enable       = true
+  runtime            = "containerd"
+  # ignore_initial_node_count = false
 
   root_volume {
-    size       = 50
-    volumetype = "SAS"
+    # minimal size is 40 GB for system disk
+    size       = 40
+    volumetype = "GPSSD"
   }
+
   data_volumes {
+    # minimal size is 100 GB for first data disk
     size       = 100
-    volumetype = "SAS"
+    volumetype = "GPSSD"
   }
 }
+
 
 ########################################################################
 # Load Balancer with EIP for inbound access
 
 resource "huaweicloud_lb_loadbalancer" "main" {
+  count         = var.create_elb ? 1 : 0
   name          = "elb-cce-demo"
   vip_subnet_id = huaweicloud_vpc_subnet.main.ipv4_subnet_id
 }
 
 resource "huaweicloud_vpc_eip" "elb" {
-  name = "eip-elb-demo"
+  count = var.create_elb ? 1 : 0
+  name  = "eip-elb-demo"
   publicip {
     type = "5_bgp"
   }
@@ -74,6 +88,7 @@ resource "huaweicloud_vpc_eip" "elb" {
 }
 
 resource "huaweicloud_vpc_eip_associate" "elb" {
-  public_ip = huaweicloud_vpc_eip.elb.address
-  port_id   = huaweicloud_lb_loadbalancer.main.vip_port_id
+  count     = var.create_elb ? 1 : 0
+  public_ip = one(huaweicloud_vpc_eip.elb).address
+  port_id   = one(huaweicloud_lb_loadbalancer.main).vip_port_id
 }

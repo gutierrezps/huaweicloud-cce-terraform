@@ -18,6 +18,7 @@ resource "huaweicloud_vpc_subnet" "main" {
 # NAT Gateway for outbound internet access
 
 resource "huaweicloud_nat_gateway" "main" {
+  count     = var.create_nat ? 1 : 0
   name      = "nat-demo"
   spec      = "1"
   vpc_id    = huaweicloud_vpc.main.id
@@ -25,7 +26,8 @@ resource "huaweicloud_nat_gateway" "main" {
 }
 
 resource "huaweicloud_vpc_eip" "nat" {
-  name = "eip-nat-demo"
+  count = var.create_nat ? 1 : 0
+  name  = "eip-nat-demo"
   publicip {
     type = "5_bgp"
   }
@@ -39,7 +41,8 @@ resource "huaweicloud_vpc_eip" "nat" {
 }
 
 resource "huaweicloud_nat_snat_rule" "main" {
-  nat_gateway_id = huaweicloud_nat_gateway.main.id
-  floating_ip_id = huaweicloud_vpc_eip.nat.id
+  count          = var.create_nat ? 1 : 0
+  nat_gateway_id = one(huaweicloud_nat_gateway.main).id
+  floating_ip_id = one(huaweicloud_vpc_eip.nat).id
   subnet_id      = huaweicloud_vpc_subnet.main.id
 }
