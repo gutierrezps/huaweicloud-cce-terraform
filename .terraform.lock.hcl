@@ -21,20 +21,20 @@ provider "registry.terraform.io/hashicorp/local" {
 }
 
 provider "registry.terraform.io/huaweicloud/huaweicloud" {
-  version     = "1.78.3"
-  constraints = "1.78.3"
+  version     = "1.78.5"
+  constraints = "1.78.5"
   hashes = [
-    "h1:3lTUKZnpX6b21ys72NJ1NFoDZyqRhufehTpsdwEnYmM=",
-    "zh:15d43ce4fd75af43bc5f169108ceb5b43be8447459a9d5baa7e79eac6c9ea616",
-    "zh:17d92eb2432c4cf4b82c3b638a140ff68896707d55e8455df182322863b0d632",
-    "zh:2dd587e94209281fddebdb8e233313a232ec344b6224ec40dde684d35dbe1bdf",
-    "zh:43376db6cd08abff27b344564a6c3fe6ec53602bec196904080750533a37e4ad",
-    "zh:8228f96e65e655ddc2c31c0b7c9a0eeb07edc1ef65839b59512ff0f0d62882cc",
-    "zh:8b6e43d7156b805eba5040b6e4826b1678c6d9bcddceccb6f3aca2065fa69c72",
-    "zh:d0ad9b27ecdca0d74f2731a7102bf460613ce2891028b5df729155567eeee93f",
-    "zh:d134f457b4197f6de67fa1623079b302598de7c6c69565bdc04161ea5782c98d",
-    "zh:d9a1a76bd9ce94ac4d303b1fd523e7a0f86e29430bc5a1ca8f33ea13ace9476e",
-    "zh:eec530e13e58d11e0d3a4f0aba8c2e2d0a6ddf1584cfa4cea533e12b761928ec",
-    "zh:f4ab3492c7696d1b1b59de2d8d11b2179bc53dd71b322d353ae21f63fe5aff91",
+    "h1:9BW0zJt5qZuZpbC3S498gF9Iv68o1j7x2RV6vMyWq7g=",
+    "zh:0b7c98eddde3d1510af02aea610345a5e306bfc600d9b384b4263f417b78cc75",
+    "zh:150995af4f59892744a13cb5e40a44bd2125a1024e53885f620c86d68ab75998",
+    "zh:2eddc6855dd4165996ee3bfca2891f26ba10f4cbed74e164e1d771540ed88a0b",
+    "zh:33706d5e0e6f3a518699aa91dfd3d022864dc41bb6f16186f3291604ff5ef71b",
+    "zh:5e1e8cbe2676a22ac642e3e6c59b1ad67a3b4c54e6c7445b84b7cdf9b4e173b9",
+    "zh:6c372af069d32f2b115ff0f57efa08e033ab0204b728b8824f514c584293080f",
+    "zh:72092926e55175917238686904d9c5ec695be4b26299b42f792bf3940aa9377d",
+    "zh:99249ffc0185b2c527f8adaa8d473dd89afdd2352bc9fb3b7981e54d7f4ed0bb",
+    "zh:9d3b50cab4bf5b185d1875c15251497cd663b1335db651fdef3e69526cbee6d8",
+    "zh:a8d45d753c50e4beda0fecac33160f4489789ea98f73a53c5e2fca5f3ddedba3",
+    "zh:d3f96858d79670401c59db6dd826e8ea14a13f84a1e607914540e215ef7d356f",
   ]
 }
