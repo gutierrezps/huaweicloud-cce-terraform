@@ -8,9 +8,13 @@ deployment. It includes:
   for outbound internet access;
 - [Cloud Container Engine (CCE)][cce] with one [Elastic Cloud Server (ECS)][ecs]
   and EIP for kubectl cluster management;
-- [Elastic Load Balance (ELB)][elb] with EIP for inbound access.
+- [Elastic Load Balance (ELB)][elb] with EIP for inbound access;
+- [Object Storage Service (OBS)][obs] bucket + [IAM User][iam] for usage as
+  [ReadWriteMany PVC][obs-pvc] in CCE cluster;
 
-The Terraform script also outputs the `kubeconfig` file to the `output` folder.
+The Terraform script also outputs the Kubeconfig file to the `output`
+folder, as well as the credentials file for the IAM User with read/write
+permissions in the OBS bucket.
 
 ![Services Architecture](architecture.png)
 
@@ -35,3 +39,6 @@ The Terraform script also outputs the `kubeconfig` file to the `output` folder.
 [eip]: <https://www.huaweicloud.com/intl/en-us/product/eip.html>
 [elb]: <https://www.huaweicloud.com/intl/en-us/product/elb.html>
 [ecs]: <https://www.huaweicloud.com/intl/en-us/product/ecs.html>
+[obs]: <https://www.huaweicloud.com/intl/en-us/product/obs.html>
+[iam]: <https://www.huaweicloud.com/intl/en-us/product/iam.html>
+[obs-pvc]: <https://support.huaweicloud.com/intl/en-us/usermanual-cce/cce_10_0378.html>
