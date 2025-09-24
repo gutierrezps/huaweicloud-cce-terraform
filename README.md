@@ -6,8 +6,8 @@ deployment. It includes:
 - [Virtual Private Cloud (VPC)][vpc] with one subnet;
 - [NAT Gateway][nat] with [Elastic IP (EIP)][eip] + SNAT rule
   for outbound internet access;
-- [Cloud Container Engine (CCE)][cce] with one [Elastic Cloud Server (ECS)][ecs]
-  and EIP for kubectl cluster management;
+- [Cloud Container Engine (CCE)][cce] with one node pool containing two nodes
+  ([Elastic Cloud Server (ECS)][ecs]) and EIP for kubectl cluster management;
 - [Elastic Load Balance (ELB)][elb] with EIP for inbound access;
 - [Object Storage Service (OBS)][obs] bucket + [IAM User][iam] for usage as
   [ReadWriteMany PVC][obs-pvc] in CCE cluster;
@@ -31,6 +31,8 @@ permissions in the OBS bucket.
 
 - Huawei Cloud Terraform provider documentation:
   <https://registry.terraform.io/providers/huaweicloud/huaweicloud/latest/docs>
+- Huawei Cloud Terraform boilerplate:
+  <https://github.com/huaweicloud-latam/terraform-boilerplate>
 
 [hwc]: <https://www.huaweicloud.com/intl/en-us/>
 [cce]: <https://www.huaweicloud.com/intl/en-us/product/cce.html>
