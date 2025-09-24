@@ -8,6 +8,7 @@ resource "huaweicloud_identity_user" "obs_access" {
   count       = var.create_obs ? 1 : 0
   name        = var.obs_bucket_name
   access_type = "programmatic"
+  pwd_reset   = false
 }
 
 resource "huaweicloud_identity_access_key" "obs_access" {

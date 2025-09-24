@@ -31,11 +31,15 @@ resource "huaweicloud_cce_cluster" "main" {
 resource "local_file" "cce_kubeconfig" {
   content  = huaweicloud_cce_cluster.main.kube_config_raw
   filename = "output/kubeconfig.json"
+
+  lifecycle {
+    ignore_changes = [ content ]
+  }
 }
 
 resource "huaweicloud_cce_node_pool" "main" {
   cluster_id         = huaweicloud_cce_cluster.main.id
-  name               = "cce-pool"
+  name               = "cce-demo-pool"
   os                 = "Huawei Cloud EulerOS 2.0"
   initial_node_count = 2
   flavor_id          = "s7n.xlarge.4"
@@ -47,7 +51,6 @@ resource "huaweicloud_cce_node_pool" "main" {
   type               = "vm"
   scall_enable       = true
   runtime            = "containerd"
-  # ignore_initial_node_count = false
 
   root_volume {
     # minimal size is 40 GB for system disk
