@@ -1,48 +1,42 @@
-########################################################################
-# VPC and subnet
+module "cce" {
+  source = "./module/cce"
 
-resource "huaweicloud_vpc" "main" {
-  name = "vpc-demo"
-  cidr = "10.0.0.0/16"
+  cce_node_password = var.cce_node_password
+  obs_bucket_name   = var.obs_bucket_name
+
+  create_elb = var.create_elb
+  create_nat = var.create_nat
+  create_obs = var.create_obs
 }
 
-resource "huaweicloud_vpc_subnet" "main" {
-  name              = "subnet-demo"
-  cidr              = "10.0.0.0/24"
-  gateway_ip        = "10.0.0.1"
-  vpc_id            = huaweicloud_vpc.main.id
-  availability_zone = var.availability_zone
+data "huaweicloud_identity_agencies" "authorized" {
+  for_each = toset(var.cce_authorized_agencies)
+  name = each.value
 }
 
-########################################################################
-# NAT Gateway for outbound internet access
-
-resource "huaweicloud_nat_gateway" "main" {
-  count     = var.create_nat ? 1 : 0
-  name      = "nat-demo"
-  spec      = "1"
-  vpc_id    = huaweicloud_vpc.main.id
-  subnet_id = huaweicloud_vpc_subnet.main.id
+data "huaweicloud_identity_users" "authorized" {
+  for_each = toset(var.cce_authorized_users)
+  name = each.value
 }
 
-resource "huaweicloud_vpc_eip" "nat" {
-  count = var.create_nat ? 1 : 0
-  name  = "eip-nat-demo"
-  publicip {
-    type = "5_bgp"
-  }
-
-  bandwidth {
-    share_type  = "PER"
-    name        = "bandwidth-nat-demo"
-    size        = 300
-    charge_mode = "traffic"
-  }
+locals {
+  authorized_agencies_ids = [
+    for agency_data_source in values(data.huaweicloud_identity_agencies.authorized) :
+    agency_data_source.agencies[0].id
+    if length(agency_data_source.agencies) > 0
+  ]
+  authorized_users_ids = [
+    for user_data_source in values(data.huaweicloud_identity_users.authorized) :
+    user_data_source.users[0].id
+    if length(user_data_source.users) > 0
+  ]
 }
 
-resource "huaweicloud_nat_snat_rule" "main" {
-  count          = var.create_nat ? 1 : 0
-  nat_gateway_id = one(huaweicloud_nat_gateway.main).id
-  floating_ip_id = one(huaweicloud_vpc_eip.nat).id
-  subnet_id      = huaweicloud_vpc_subnet.main.id
+module "k8s" {
+  source = "./module/k8s"
+
+  cluster_admin_user_ids = concat(
+    local.authorized_agencies_ids,
+    local.authorized_users_ids
+  )
 }

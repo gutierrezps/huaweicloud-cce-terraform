@@ -16,7 +16,7 @@ The Terraform script also outputs the Kubeconfig file to the `output`
 folder, as well as the credentials file for the IAM User with read/write
 permissions in the OBS bucket.
 
-![Services Architecture](architecture.png)
+![Services Architecture](docs/architecture.png)
 
 ## Instructions
 
@@ -24,8 +24,27 @@ permissions in the OBS bucket.
 2. Make a copy of `terraform.tfvars.example` named `terraform.tfvars` and
    set AK, SK and passwords;
 3. Run `terraform init` the first time to download provider files;
-4. Run `terraform plan` to check what will be done;
-5. Run `terraform apply` to provision the infrastructure.
+4. Run `terraform apply -target module.cce` to provision the Huawei Cloud
+   infrastructure;
+5. Run `terraform apply` to add the permissions in the cluster (explanation
+   below).
+
+## Cluster Permissions
+
+When a new cluster is created, only the user that created it is allowed to
+operate the cluster. Other users (and agencies), even if they have CCE
+permissions granted by IAM policies, will not be able to perform certain
+actions inside the cluster. This problem is illustrated in the picture below,
+where some menu options are disabled for another user when they access the
+cluster:
+
+![Menu options disabled in the CCE Cluster details page](docs/cce-disabled-menus.png)
+
+To solve this issue, the module `k8s` is used to grant permissions inside the
+CCE cluster, for the given IAM user names and IAM agency names specified by
+variables `cce_authorized_agencies` and `cce_authorized_users`. This module
+can only be executed after the cluster is created, and the credentials file
+`output/kubeconfig.json` is available.
 
 ## References
 
@@ -33,6 +52,7 @@ permissions in the OBS bucket.
   <https://registry.terraform.io/providers/huaweicloud/huaweicloud/latest/docs>
 - Huawei Cloud Terraform boilerplate:
   <https://github.com/huaweicloud-latam/terraform-boilerplate>
+- Namespace Permissions (Kubernetes RBAC-based): <https://support.huaweicloud.com/intl/en-us/usermanual-cce/cce_10_0189.html>
 
 [hwc]: <https://www.huaweicloud.com/intl/en-us/>
 [cce]: <https://www.huaweicloud.com/intl/en-us/product/cce.html>

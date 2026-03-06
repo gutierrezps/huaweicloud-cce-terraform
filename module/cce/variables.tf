@@ -1,14 +1,3 @@
-variable "hwc_access_key" {
-  type        = string
-  description = "Access Key (AK) of your Huawei Cloud account or IAM User"
-}
-
-variable "hwc_secret_key" {
-  type        = string
-  sensitive   = true
-  description = "Secret Access Key (SK) of your Huawei Cloud account or IAM User"
-}
-
 variable "region" {
   type        = string
   default     = "sa-brazil-1"
@@ -48,16 +37,4 @@ variable "create_obs" {
   type        = bool
   description = "Set to true to create an OBS bucket + IAM user"
   default     = false
-}
-
-variable "cce_authorized_agencies" {
-  type = list(string)
-  description = "List of agency names to be authorized to operate CCE"
-  default = []
-}
-
-variable "cce_authorized_users" {
-  type = list(string)
-  description = "List of usernames to be authorized to operate CCE"
-  default = []
 }
